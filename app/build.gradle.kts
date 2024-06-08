@@ -5,6 +5,8 @@ plugins {
     id("kotlin-parcelize")
     id("kotlin-kapt")
     alias(libs.plugins.hilt.android)
+    alias(libs.plugins.google.gms.google.services)
+
 }
 
 android {
@@ -32,6 +34,10 @@ android {
                 "proguard-rules.pro"
             )
         }
+        getByName("debug"){
+            applicationIdSuffix = ".debug"
+            isDebuggable = true
+        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -55,6 +61,12 @@ android {
 
 dependencies {
 
+    //Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.auth.ktx)
+    implementation(libs.firebase.auth)
+
     // Kotlin & Android
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -75,6 +87,7 @@ dependencies {
 
     // hilt
     implementation(libs.hilt.android)
+    implementation(libs.firebase.auth)
     kapt(libs.hilt.android.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
 
