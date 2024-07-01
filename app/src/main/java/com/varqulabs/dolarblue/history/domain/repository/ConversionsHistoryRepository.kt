@@ -12,5 +12,7 @@ interface ConversionsHistoryRepository {
 
     suspend fun updateConversion(conversion: Conversion)
 
-    suspend fun searchConversionsHistoryByQuery(querySearch: String): Flow<List<ConversionsHistory>>
+    suspend fun deleteConversion(conversion: Conversion)
+
+    suspend fun searchConversionsHistoryByQuery(columnName: String, querySearch: String): Flow<List<ConversionsHistory>>
 }

@@ -1,8 +1,11 @@
 package com.varqulabs.dolarblue.history.data.local.database.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Query
+import androidx.room.RawQuery
 import androidx.room.Transaction
+import androidx.sqlite.db.SupportSQLiteQuery
 import androidx.room.Update
 import com.varqulabs.dolarblue.calculator.data.local.database.entities.ConversionEntity
 import com.varqulabs.dolarblue.history.data.local.database.entities.relations.ConversionsHistoryRelation
@@ -23,6 +26,9 @@ interface ConversionsHistoryDao {
     @Update
     suspend fun updateConversion(conversionEntity: ConversionEntity)
 
+    @Delete
+    suspend fun deleteConversion(conversionEntity: ConversionEntity)
+
     @Transaction
     @Query("""
         SELECT conversion_table.* FROM current_exchange_rate_table 
@@ -32,13 +38,6 @@ interface ConversionsHistoryDao {
     fun getFavoriteConversionsHistory(): Flow<List<ConversionsWithCurrentExchangeRelation>>
 
     @Transaction
-    @Query("""
-        SELECT conversion_table.*
-        FROM current_exchange_rate_table
-        JOIN conversion_table ON current_exchange_rate_table.id = conversion_table.currentExchangeId
-        WHERE conversion_table.name LIKE '%' || :querySearch || '%'
-        OR conversion_table.date LIKE '%' || :querySearch || '%'
-        OR conversion_table.pesosBob LIKE '%' || :querySearch || '%'
-     """)
-    fun searchConversionsHistoryByQuery(querySearch: String): Flow<List<ConversionsWithCurrentExchangeRelation>>
+    @RawQuery
+    fun searchConversionsHistoryByQuery(query: SupportSQLiteQuery): Flow<List<ConversionsWithCurrentExchangeRelation>>
 }
