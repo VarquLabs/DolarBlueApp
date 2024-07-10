@@ -23,7 +23,14 @@ class AuthViewModel @Inject constructor(
             is Loading -> updateUi { copy(isLoading = isLoading) }
             is AuthEvent.OnClickDrawer -> emitOpenDrawer()
             is AuthEvent.OnClickSignInWithGoogle -> signInWithGoogleAccount(event.credential)
-            AuthEvent.LoginMessageShown -> updateUi { copy(isLoading = false, loginMessage = "", isError = false, isLoggedSuccessful = false) }
+            AuthEvent.LoginMessageShown -> updateUi {
+                copy(
+                    isLoading = false,
+                    loginMessage = "",
+                    isError = false,
+                    isLoggedSuccessful = false
+                )
+            }
         }
     }
 
@@ -31,11 +38,32 @@ class AuthViewModel @Inject constructor(
 
     private fun signInWithGoogleAccount(credential: AuthCredential) = viewModelScope.launch {
         signInWithGoogleAccountUseCase.execute(credential).collectLatest {
-            when(it){
-                is DataState.Error -> updateUi { copy( loginMessage = "Error inesperado", isError = true, isLoggedSuccessful = false, isLoading = false) }
+            when (it) {
+                is DataState.Error -> updateUi {
+                    copy(
+                        loginMessage = "Error inesperado",
+                        isError = true,
+                        isLoggedSuccessful = false,
+                        isLoading = false
+                    )
+                }
                 DataState.Loading -> updateUi { copy(isLoading = true) }
-                DataState.NetworkError -> updateUi { copy(loginMessage = "Error de conexion", isError = true, isLoading = false, isLoggedSuccessful = false) }
-                is DataState.Success -> updateUi { copy(loginMessage = "Inicio de sesion exitoso", isLoggedSuccessful = true, isError = false, isLoading = false) }
+                DataState.NetworkError -> updateUi {
+                    copy(
+                        loginMessage = "Error de conexion",
+                        isError = true,
+                        isLoading = false,
+                        isLoggedSuccessful = false
+                    )
+                }
+                is DataState.Success -> updateUi {
+                    copy(
+                        loginMessage = "Inicio de sesion exitoso",
+                        isLoggedSuccessful = true,
+                        isError = false,
+                        isLoading = false
+                    )
+                }
             }
         }
     }
