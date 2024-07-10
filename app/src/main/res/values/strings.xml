@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Dolar Blue</string>
+
     <string name="copy_login">Iniciar sesión</string>
+
     <string name="copy_notifications">Notificaciones</string>
 
     <string name="copy_calculator">Calculadora</string>
@@ -10,4 +12,7 @@
     <string name="copy_news">Noticias</string>
 
     <string name="copy_settings">Configuración</string>
+
+    <string name="web_client_id">1050037682384-54gf951gr5n2ppj057m711fthjp001m3.apps.googleusercontent.com</string>
+
 </resources>

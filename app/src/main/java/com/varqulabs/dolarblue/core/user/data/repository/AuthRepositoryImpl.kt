@@ -1,11 +1,15 @@
 package com.varqulabs.dolarblue.core.user.data.repository
 
-import com.google.firebase.auth.AuthResult
+import android.util.Log
+import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.GoogleAuthProvider
 import com.varqulabs.dolarblue.core.data.local.preferences.PreferenceKey
 import com.varqulabs.dolarblue.core.domain.preferences.repository.PreferencesRepository
 import com.varqulabs.dolarblue.core.user.data.mappers.toUserSerializable
 import com.varqulabs.dolarblue.auth.domain.model.AuthRequest
+import com.varqulabs.dolarblue.core.user.data.model.UserSerializable
 import com.varqulabs.dolarblue.core.user.domain.model.User
 import com.varqulabs.dolarblue.core.user.domain.repository.AuthRepository
 import kotlinx.coroutines.delay
@@ -25,7 +29,7 @@ class AuthRepositoryImpl(
             val user = firebaseService.signInWithEmailAndPassword(
                 loginRequest.email,
                 loginRequest.password
-            ).await()
+            ).await().user
             saveUserSession(user)
             emit(true)
         }
@@ -42,7 +46,13 @@ class AuthRepositoryImpl(
         val user = firebaseService.createUserWithEmailAndPassword(
             signupRequest.email,
             signupRequest.password
-        ).await()
+        ).await().user
+        saveUserSession(user)
+        emit(true)
+    }
+
+    override fun signInWithGoogleAccount(credential: AuthCredential): Flow<Boolean> = flow {
+        val user = firebaseService.signInWithCredential(credential).await().user
         saveUserSession(user)
         emit(true)
     }
@@ -68,18 +78,19 @@ class AuthRepositoryImpl(
         } ?: false
     }
 
-    private suspend fun saveUserSession(user: AuthResult) {
-        val userSession = Json.encodeToString(
-            User(
-                token = user.user?.uid.orEmpty(),
-                userName = user.user?.displayName.orEmpty(),
-                email = user.user?.email.orEmpty()
-            ).toUserSerializable()
-        )
-        preferencesRepository.putPreference(
-            PreferenceKey.USER_SESSION,
-            userSession
-        )
+    private suspend fun saveUserSession(user: FirebaseUser?) {
+        user?.run {
+            val userSession = Json.encodeToString(
+                User(
+                    token = user.uid,
+                    userName = user.displayName.orEmpty(),
+                    email = user.email.orEmpty()
+                ).toUserSerializable()
+            )
+            preferencesRepository.putPreference(
+                PreferenceKey.USER_SESSION,
+                userSession
+            )
+        }
     }
-
 }

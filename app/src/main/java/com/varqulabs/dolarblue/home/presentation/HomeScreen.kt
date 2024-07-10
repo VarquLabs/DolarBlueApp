@@ -15,6 +15,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.varqulabs.dolarblue.R
+import com.varqulabs.dolarblue.auth.presentation.login.loginRoute
 import com.varqulabs.dolarblue.calculator.navigation.calculatorRoute
 import com.varqulabs.dolarblue.core.presentation.model.DrawerItem
 import com.varqulabs.dolarblue.history.navigation.historyRoute
@@ -35,6 +36,11 @@ private val drawerItems = listOf(
         icon = R.drawable.ic_launcher_foreground,
         route = Routes.History
     ),
+    DrawerItem(
+        title = R.string.copy_login,
+        icon = R.drawable.ic_launcher_foreground,
+        route = Routes.Login
+    )
 )
 
 @Composable
@@ -73,6 +79,9 @@ internal fun HomeScreen(
             )
 
             historyRoute(
+                openDrawer = { coroutineScope.launch { drawerState.open() } }
+            )
+            loginRoute(
                 openDrawer = { coroutineScope.launch { drawerState.open() } }
             )
         }

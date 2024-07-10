@@ -117,6 +117,9 @@ dependencies {
 
     // Kotlin DateTime
     implementation(libs.kotlinx.datetime)
+
+    // Google Services
+    implementation(libs.google.services)
 }
 
 room {
