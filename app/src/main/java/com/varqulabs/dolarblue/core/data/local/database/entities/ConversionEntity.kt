@@ -1,4 +1,4 @@
-package com.varqulabs.dolarblue.calculator.data.local.database.entities
+package com.varqulabs.dolarblue.core.data.local.database.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

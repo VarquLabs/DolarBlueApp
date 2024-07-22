@@ -1,13 +1,11 @@
 package com.varqulabs.dolarblue.history.data.repository
 
 import androidx.sqlite.db.SimpleSQLiteQuery
-import com.varqulabs.dolarblue.calculator.data.local.database.dao.ConversionDao
-import com.varqulabs.dolarblue.calculator.data.local.database.mappers.mapToModel
+import com.varqulabs.dolarblue.history.data.local.database.mappers.mapToModel
 import com.varqulabs.dolarblue.history.data.local.database.dao.ConversionsHistoryDao
 import com.varqulabs.dolarblue.history.data.local.database.entities.relations.ConversionsWithCurrentExchangeRelation
-import com.varqulabs.dolarblue.history.data.local.database.mappers.mapToModel
-import com.varqulabs.dolarblue.history.domain.mappers.mapToEntity
-import com.varqulabs.dolarblue.history.domain.model.Conversion
+import com.varqulabs.dolarblue.core.domain.mappers.mapToEntity
+import com.varqulabs.dolarblue.core.domain.model.Conversion
 import com.varqulabs.dolarblue.history.domain.model.QueryAndCurrency
 import com.varqulabs.dolarblue.history.domain.model.ConversionsHistory
 import com.varqulabs.dolarblue.history.domain.repository.ConversionsHistoryRepository
@@ -15,8 +13,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class ConversionsHistoryRepositoryImpl(
-    private val conversionHistoryDao: ConversionsHistoryDao,
-    private val conversionDao: ConversionDao
+    private val conversionHistoryDao: ConversionsHistoryDao
 ) : ConversionsHistoryRepository {
 
     override suspend fun getConversionsHistoryFlow(): Flow<List<ConversionsHistory>> {
@@ -54,10 +51,6 @@ class ConversionsHistoryRepositoryImpl(
         val simpleQuery = SimpleSQLiteQuery(query = query, bindArgs = arrayOf("%${queryAndCurrency.searchQuery}%", "%${queryAndCurrency.searchQuery}%"))
 
         return getGroupedConversions(conversionHistoryDao.searchConversionsHistoryByQueryAndCurrency(simpleQuery))
-    }
-
-    override suspend fun insertConversion(conversion: Conversion) {
-        conversionDao.insertConversion(conversion.mapToEntity())
     }
 
     private fun getGroupedConversions(daoFunction: Flow<List<ConversionsWithCurrentExchangeRelation>>) : Flow<List<ConversionsHistory>> {
