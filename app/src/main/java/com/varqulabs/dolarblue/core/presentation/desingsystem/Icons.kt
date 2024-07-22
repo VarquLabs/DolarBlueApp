@@ -20,3 +20,47 @@ val EyeOpenedIconPositive: ImageVector
 val EyeOpenedIconNegative: ImageVector
     @Composable
     get() = ImageVector.vectorResource(id = R.drawable.ver2_n)
+
+val FavoriteIconPositive: ImageVector
+    @Composable
+    get() = ImageVector.vectorResource(id = R.drawable.favoritos_1_p)
+
+val FavoriteIconNegative: ImageVector
+    @Composable
+    get() = ImageVector.vectorResource(id = R.drawable.favoritos_1_n)
+
+val BorderFavoriteIconPositive: ImageVector
+    @Composable
+    get() = ImageVector.vectorResource(id = R.drawable.favoritos_2_p)
+
+val BorderFavoriteIconNegative: ImageVector
+    @Composable
+    get() = ImageVector.vectorResource(id = R.drawable.favoritos_2_n)
+
+val SearchIconPositive: ImageVector
+    @Composable
+    get() = ImageVector.vectorResource(id =  R.drawable.buscar_p)
+
+val SearchIconNegative: ImageVector
+    @Composable
+    get() = ImageVector.vectorResource(id =  R.drawable.buscar_n)
+
+val ClearIconPositive: ImageVector
+    @Composable
+    get() = ImageVector.vectorResource(id =  R.drawable.borrar_p)
+
+val ClearIconNegative: ImageVector
+    @Composable
+    get() = ImageVector.vectorResource(id =  R.drawable.borrar_n)
+
+val EditIconNegative: ImageVector
+    @Composable
+    get() = ImageVector.vectorResource(id = R.drawable.editar_p)
+
+val EditIconPositive: ImageVector
+    @Composable
+    get() = ImageVector.vectorResource(id = R.drawable.editar_n)
+
+val DeleteIcon: ImageVector
+    @Composable
+    get() = ImageVector.vectorResource(id = R.drawable.eliminar)

@@ -1,8 +1,10 @@
 package com.varqulabs.dolarblue.history.presentation
 
 import androidx.compose.runtime.Stable
+import com.varqulabs.dolarblue.R
 import com.varqulabs.dolarblue.core.domain.enums.CurrencyTab
-import com.varqulabs.dolarblue.history.domain.model.Conversion
+import com.varqulabs.dolarblue.core.presentation.ui.UiText
+import com.varqulabs.dolarblue.core.domain.model.Conversion
 import com.varqulabs.dolarblue.history.domain.model.ConversionsHistory
 
 @Stable
@@ -18,9 +20,11 @@ data class HistoryState(
     val currencyColumnName: String = CurrencyTab.BOB.columnName,
     val searchQuery: String = "",
     val conversionCount: Int = 0,
-    val informationMessage: String = "",
+    val informationMessage: Int = R.string.search_no_information_to_show,
     val isSnackBarVisible: Boolean = false,
     val recentlyConversionDeleted: Conversion? = null,
     val showFilteredList: Boolean = false,
-    val isHeaderVisible: Boolean = true
+    val isHeaderVisible: Boolean = true,
+    val newConversionName: String = "",
+    val conversionNameError: UiText? = null
 )

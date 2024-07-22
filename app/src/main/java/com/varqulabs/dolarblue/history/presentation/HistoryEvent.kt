@@ -1,6 +1,6 @@
 package com.varqulabs.dolarblue.history.presentation
 
-import com.varqulabs.dolarblue.history.domain.model.Conversion
+import com.varqulabs.dolarblue.core.domain.model.Conversion
 
 sealed interface HistoryEvent {
 
@@ -31,4 +31,6 @@ sealed interface HistoryEvent {
     data object UndoConversionDelete : HistoryEvent
 
     data class OnDeleteConversion(val conversion: Conversion?) : HistoryEvent
+
+    data class OnConversionNameChange(val newConversionName: String) : HistoryEvent
 }

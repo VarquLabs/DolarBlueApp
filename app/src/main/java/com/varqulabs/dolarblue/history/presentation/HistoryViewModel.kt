@@ -2,10 +2,12 @@ package com.varqulabs.dolarblue.history.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.varqulabs.dolarblue.R
 import com.varqulabs.dolarblue.core.domain.DataState
+import com.varqulabs.dolarblue.core.presentation.ui.UiText
 import com.varqulabs.dolarblue.core.presentation.utils.mvi.MVIContract
 import com.varqulabs.dolarblue.core.presentation.utils.mvi.mviDelegate
-import com.varqulabs.dolarblue.history.domain.model.Conversion
+import com.varqulabs.dolarblue.core.domain.model.Conversion
 import com.varqulabs.dolarblue.history.domain.model.QueryAndCurrency
 import com.varqulabs.dolarblue.history.domain.useCases.DeleteConversionUseCase
 import com.varqulabs.dolarblue.history.domain.useCases.DeleteExchangeRateUseCase
@@ -49,7 +51,8 @@ class HistoryViewModel @Inject constructor(
                 isVisible = false,
                 selectedConversion = null
             )
-            is OnSetNameConversion -> setConversionName(event.name)
+            is OnConversionNameChange -> onConversionNameChange(event.newConversionName)
+            is OnSetNameConversion -> canUpdateConversionName(event.name)
             is OnSetFavoriteConversion -> setFavoriteConversion(event.conversion)
             is OnShowSnackBar -> showSnackBar(event.conversionDeleted)
             is UndoConversionDelete -> resetUIState()
@@ -71,7 +74,6 @@ class HistoryViewModel @Inject constructor(
         updateUi { copy(showFavoriteConversions = !showFavoriteConversions) }
     }
 
-    // TODO crear string para informationMessage
     private fun executeGetConversionHistory() = viewModelScope.launch(Dispatchers.IO) {
         getConversionsHistoryUseCase.execute(Unit).collectLatest { dataState ->
             updateUiStateForDataState(
@@ -82,21 +84,25 @@ class HistoryViewModel @Inject constructor(
                     copy(
                         isLoading = false,
                         conversionsHistory = data,
-                        informationMessage = "No hay información por mostrar"
+                        informationMessage = R.string.search_no_information_to_show,
+                        showFavoriteConversions = false
                     )
                 }
             }
         }
     }
 
-    // TODO crear string para informationMessage
     private fun executeGetFavoritesConversionHistory() = viewModelScope.launch(Dispatchers.IO) {
         getFavoriteConversionsHistoryUseCase.execute(Unit).collectLatest { dataState ->
-            updateUiStateForDataState(dataState) { data ->
+            updateUiStateForDataState(
+                dataState = dataState,
+                isLoading = true
+            ) { data ->
                 updateUi {
                     copy(
+                        isLoading = false,
                         conversionsHistory = data,
-                        informationMessage = "No hay información por mostrar"
+                        informationMessage = R.string.search_no_information_to_show
                     )
                 }
             }
@@ -121,7 +127,6 @@ class HistoryViewModel @Inject constructor(
         }
     }
 
-    // TODO crear string para informationMessage
     private fun executeConversionHistorySearch(currencyColumnName: String, searchQuery: String) =
         viewModelScope.launch(Dispatchers.IO) {
             searchConversionsHistoryUseCase.execute(
@@ -134,7 +139,7 @@ class HistoryViewModel @Inject constructor(
                     updateUi {
                         copy(
                             conversionsHistory = data,
-                            informationMessage = "No se encontraron coincidencias"
+                            informationMessage = R.string.search_no_matches_found
                         )
                     }
                 }
@@ -150,14 +155,49 @@ class HistoryViewModel @Inject constructor(
         updateUi {
             copy(
                 isDialogVisible = isVisible,
-                selectedConversion = selectedConversion
+                selectedConversion = selectedConversion,
+                newConversionName = "",
+                conversionNameError = null
             )
+        }
+    }
+
+    private fun onConversionNameChange(newConversionName: String) {
+        updateUi {
+            copy(
+                newConversionName = newConversionName,
+                conversionNameError = validateConversionName(newConversionName)
+            )
+        }
+    }
+
+    private fun validateConversionName(conversionName: String): UiText? {
+        return when {
+            conversionName == uiState.value.selectedConversion?.name -> UiText.StringResource(R.string.error_same_name)
+            conversionName.length < 2 -> UiText.StringResource(R.string.error_name_length)
+            else -> null
+        }
+    }
+
+    private fun validateAndSetErrors(currentState: HistoryState): Boolean {
+        val emailError = validateConversionName(currentState.newConversionName)
+        updateUi { copy(conversionNameError = emailError) }
+        return emailError != null
+    }
+
+    private fun canUpdateConversionName(name: String) {
+        val canUpdate = validateAndSetErrors(uiState.value)
+        if (!canUpdate) {
+            setConversionName(name)
         }
     }
 
     private fun setConversionName(name: String) {
         if (uiState.value.selectedConversion != null) {
-            executeUpdateConversion(uiState.value.selectedConversion!!.copy(name = name))
+            executeUpdateConversion(
+                conversion = uiState.value.selectedConversion!!.copy(name = name),
+                isLoading = true
+            )
         }
     }
 
@@ -165,12 +205,19 @@ class HistoryViewModel @Inject constructor(
         executeUpdateConversion(conversion.copy(isFavorite = !conversion.isFavorite))
     }
 
-    private fun executeUpdateConversion(conversion: Conversion) =
+    private fun executeUpdateConversion(conversion: Conversion, isLoading: Boolean = false) =
         viewModelScope.launch(Dispatchers.IO) {
             updateConversionUseCase.execute(conversion).collectLatest { dataState ->
-                updateUiStateForDataState(dataState) {
+                updateUiStateForDataState(
+                    dataState = dataState,
+                    isLoading = isLoading
+                ) {
                     updateUi {
-                        copy(isDialogVisible = false)
+                        copy(
+                            isDialogVisible = false,
+                            newConversionName = "",
+                            conversionNameError = null
+                        )
                     }
                 }
             }
