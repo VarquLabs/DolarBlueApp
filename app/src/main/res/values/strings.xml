@@ -31,6 +31,7 @@
     <string name="text_forgot_password">¿Olvidaste la contraseña?</string>
     <string name="title_password_field">Contraseña</string>
     <string name="text_button_login">Iniciar sessión</string>
+    <string name="text_button_login_with_google">Inicia con google</string>
     <string name="title_email_field">Correo electronico</string>
     <string name="content_description_image_logo">Logo de la aplicación</string>
     <string name="welcome_app">Bienvenido</string>
