@@ -1,6 +1,6 @@
 package com.varqulabs.dolarblue.history.presentation
 
-import com.varqulabs.dolarblue.history.domain.model.Conversion
+import com.varqulabs.dolarblue.core.domain.model.Conversion
 
 sealed interface HistoryEvent {
 

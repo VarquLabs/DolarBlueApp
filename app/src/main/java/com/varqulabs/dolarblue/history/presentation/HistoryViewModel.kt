@@ -3,9 +3,9 @@ package com.varqulabs.dolarblue.history.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.varqulabs.dolarblue.core.domain.DataState
+import com.varqulabs.dolarblue.core.domain.model.Conversion
 import com.varqulabs.dolarblue.core.presentation.utils.mvi.MVIContract
 import com.varqulabs.dolarblue.core.presentation.utils.mvi.mviDelegate
-import com.varqulabs.dolarblue.history.domain.model.Conversion
 import com.varqulabs.dolarblue.history.domain.model.QueryAndCurrency
 import com.varqulabs.dolarblue.history.domain.useCases.DeleteConversionUseCase
 import com.varqulabs.dolarblue.history.domain.useCases.DeleteExchangeRateUseCase
