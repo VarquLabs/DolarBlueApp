@@ -1,24 +1,29 @@
 package com.varqulabs.dolarblue.auth.presentation.login.components
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -44,10 +49,12 @@ fun LoginForm(
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
     ) {
-        val task = GoogleSignIn.getSignedInAccountFromIntent(it.data)
-        val account = task.getResult(ApiException::class.java)
-        val credential = GoogleAuthProvider.getCredential(account.idToken, null)
-        eventHandler(LoginEvent.OnClickLoginWithGoogle(credential))
+        if (it.resultCode == Activity.RESULT_OK){
+            val task = GoogleSignIn.getSignedInAccountFromIntent(it.data)
+            val account = task.getResult(ApiException::class.java)
+            val credential = GoogleAuthProvider.getCredential(account.idToken, null)
+            eventHandler(LoginEvent.OnClickLoginWithGoogle(credential))
+        }
     }
 
     val focusManager = LocalFocusManager.current
@@ -107,23 +114,39 @@ fun LoginForm(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 30.dp),
-            text = stringResource(R.string.text_button_login),
             onClick = {
                 eventHandler(LoginEvent.OnClickLogin)
             }
-        )
+        ){
+            Text(
+                text = stringResource(R.string.text_button_login),
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.ExtraBold,
+            )
+        }
 
         Spacer(modifier = Modifier.height(20.dp))
 
         DolarBlueActionButton(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 30.dp),
-            text = "tu cola",
+                .padding(horizontal = 20.dp),
             onClick = {
                 launcher.launch(getSignupWithGoogleAccountIntent(context))
             }
-        )
+        ){
+            Image(
+                painter = painterResource(id = R.drawable.eliminar),
+                contentDescription = "Google Logo",
+                modifier = Modifier.size(24.dp)
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = stringResource(id = R.string.text_button_login_with_google),
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.ExtraBold
+            )
+        }
     }
 
 }
@@ -136,5 +159,6 @@ private fun getSignupWithGoogleAccountIntent(context: Context): Intent {
         context,
         options
     )
+    client.signOut()
     return client.signInIntent
 }
