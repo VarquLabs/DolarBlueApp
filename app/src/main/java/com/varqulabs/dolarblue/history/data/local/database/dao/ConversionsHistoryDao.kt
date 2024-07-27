@@ -7,7 +7,7 @@ import androidx.room.RawQuery
 import androidx.room.Transaction
 import androidx.sqlite.db.SupportSQLiteQuery
 import androidx.room.Update
-import com.varqulabs.dolarblue.calculator.data.local.database.entities.ConversionEntity
+import com.varqulabs.dolarblue.core.data.local.database.entities.ConversionEntity
 import com.varqulabs.dolarblue.history.data.local.database.entities.relations.ConversionsHistoryRelation
 import com.varqulabs.dolarblue.history.data.local.database.entities.relations.ConversionsWithCurrentExchangeRelation
 import kotlinx.coroutines.flow.Flow

@@ -9,8 +9,8 @@ import com.varqulabs.dolarblue.core.data.local.database.converters.LocalDateTime
 import com.varqulabs.dolarblue.calculator.data.local.database.dao.ConversionDao
 import com.varqulabs.dolarblue.history.data.local.database.dao.ConversionsHistoryDao
 import com.varqulabs.dolarblue.calculator.data.local.database.dao.CurrentExchangeRateDao
-import com.varqulabs.dolarblue.calculator.data.local.database.entities.ConversionEntity
-import com.varqulabs.dolarblue.calculator.data.local.database.entities.CurrentExchangeRateEntity
+import com.varqulabs.dolarblue.core.data.local.database.entities.ConversionEntity
+import com.varqulabs.dolarblue.core.data.local.database.entities.CurrentExchangeRateEntity
 
 @Database(
     entities = [

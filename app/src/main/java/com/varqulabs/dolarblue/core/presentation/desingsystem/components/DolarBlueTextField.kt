@@ -1,6 +1,5 @@
 package com.varqulabs.dolarblue.core.presentation.desingsystem.components
 
-import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -9,7 +8,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -21,7 +19,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -39,15 +36,14 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.varqulabs.dolarblue.core.presentation.desingsystem.DolarBlueTheme
-import com.varqulabs.dolarblue.core.presentation.desingsystem.EyeClosedIconNegative
 import com.varqulabs.dolarblue.core.presentation.desingsystem.EyeClosedIconPositive
 import com.varqulabs.dolarblue.core.presentation.desingsystem.EyeOpenedIconPositive
+import com.varqulabs.dolarblue.core.presentation.utils.modifier.clickableSingleWithOutRipple
 
 /**
  * Campo de texto reutilizable.
@@ -60,6 +56,7 @@ import com.varqulabs.dolarblue.core.presentation.desingsystem.EyeOpenedIconPosit
  * @param hint Texto de sugerencia cuando el campo está vacío.
  * @param title Título opcional para mostrar encima del campo de texto.
  * @param isClickableText Callback opcional que se llama cuando se hace clic en el texto adicional.
+ * @param onClickableEndIcon Callback opcional que se llama cuando se hace clic en el ícono derecho.
  * @param enabled Booleano para indicar si el campo de texto está habilitado.
  * @param keyboardOptions Opciones del teclado.
  * @param keyboardActions Acciones del teclado.
@@ -80,6 +77,7 @@ fun DolarBlueTextField(
     hint: String = "",
     title: String? = null,
     isClickableText: () -> Unit = {},
+    onClickableEndIcon: () -> Unit = {},
     enabled: Boolean = true,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
@@ -87,6 +85,7 @@ fun DolarBlueTextField(
     isPassword: Boolean = false,
     additionalInfo: String? = null,
     maxLines: Int = 1,
+    textColor: Color = MaterialTheme.colorScheme.onBackground
 ) {
     var hidePassword by remember { mutableStateOf(true) }
     var isFocused by remember { mutableStateOf(false) }
@@ -105,7 +104,7 @@ fun DolarBlueTextField(
         BasicTextField(
             value = state,
             textStyle = MaterialTheme.typography.titleMedium.copy(
-                color = MaterialTheme.colorScheme.onBackground,
+                color = textColor,
             ),
             enabled = enabled,
             cursorBrush = SolidColor(MaterialTheme.colorScheme.onBackground),
@@ -133,7 +132,7 @@ fun DolarBlueTextField(
                         Icon(
                             imageVector = startIcon,
                             contentDescription = null,
-                            tint = MaterialTheme.colorScheme.primary
+                            tint = Color.Unspecified
                         )
                         Spacer(modifier = Modifier.width(16.dp))
                     }
@@ -153,8 +152,10 @@ fun DolarBlueTextField(
                         Icon(
                             imageVector = endIcon,
                             contentDescription = null,
-                            tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.padding(end = 8.dp)
+                            tint = Color.Unspecified,
+                            modifier = Modifier
+                                .padding(end = 8.dp)
+                                .clickableSingleWithOutRipple { onClickableEndIcon() }
                         )
                     }
                     if (isPassword) {
@@ -162,7 +163,7 @@ fun DolarBlueTextField(
                         Icon(
                             imageVector = if (hidePassword) EyeOpenedIconPositive else EyeClosedIconPositive,
                             contentDescription = null,
-                            tint = MaterialTheme.colorScheme.primary,
+                            tint = Color.Unspecified,
                             modifier = Modifier
                                 .clip(CircleShape)
                                 .clickable { hidePassword = !hidePassword }
