@@ -1,7 +1,7 @@
-package com.varqulabs.dolarblue.calculator.data.local.database.mappers
+package com.varqulabs.dolarblue.history.data.local.database.mappers
 
-import com.varqulabs.dolarblue.calculator.data.local.database.entities.ConversionEntity
-import com.varqulabs.dolarblue.history.domain.model.Conversion
+import com.varqulabs.dolarblue.core.data.local.database.entities.ConversionEntity
+import com.varqulabs.dolarblue.core.domain.model.Conversion
 
 fun ConversionEntity.mapToModel() = Conversion(
     id = id,

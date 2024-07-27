@@ -2,7 +2,7 @@ package com.varqulabs.dolarblue.history.presentation
 
 import androidx.compose.runtime.Stable
 import com.varqulabs.dolarblue.core.domain.enums.CurrencyTab
-import com.varqulabs.dolarblue.history.domain.model.Conversion
+import com.varqulabs.dolarblue.core.domain.model.Conversion
 import com.varqulabs.dolarblue.history.domain.model.ConversionsHistory
 
 @Stable
