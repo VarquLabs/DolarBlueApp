@@ -5,6 +5,10 @@ plugins {
     id("kotlin-parcelize")
     id("kotlin-kapt")
     alias(libs.plugins.hilt.android)
+    alias(libs.plugins.google.gms.google.services)
+
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.androidxRoom)
 }
 
 android {
@@ -55,6 +59,11 @@ android {
 
 dependencies {
 
+    //Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.auth.ktx)
+    implementation(libs.firebase.auth)
     // Kotlin & Android
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -81,6 +90,14 @@ dependencies {
     // retrofit
     implementation(libs.retrofit)
     implementation(libs.converter.moshi)
+    implementation(libs.converter.gson)
+
+    // Data Store
+    implementation(libs.datastore.preferences)
+
+    // okHTTP
+    implementation(libs.okhttp)
+    implementation(libs.logging.interceptor)
 
     // Testing
     testImplementation(libs.junit)
@@ -90,4 +107,24 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    // ROOM
+    implementation(libs.androidx.room.runtime)
+    ksp(libs.androidx.room.compiler)
+
+    // SQLITE
+    implementation(libs.sqlite.bundled)
+
+    // Kotlin DateTime
+    implementation(libs.kotlinx.datetime)
+
+    // Kotlin UUID
+    implementation(libs.kotlinx.uuid.core)
+
+    // Google Services
+    implementation(libs.google.services.auth)
+}
+
+room {
+    schemaDirectory("$projectDir/schemas")
 }

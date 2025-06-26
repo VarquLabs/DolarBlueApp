@@ -1,3 +1,42 @@
 <resources>
+
+    <string name="web_client_id">1050037682384-54gf951gr5n2ppj057m711fthjp001m3.apps.googleusercontent.com</string>
+    
     <string name="app_name">Dolar Blue</string>
+    <string name="copy_login">Iniciar sesión</string>
+    <string name="copy_notifications">Notificaciones</string>
+
+    <string name="copy_calculator">Calculadora</string>
+
+    <string name="copy_history">Historial</string>
+
+    <string name="copy_news">Noticias</string>
+
+    <string name="copy_settings">Configuración</string>
+    <string name="copy_theme">Tema</string>
+    <string name="copy_dark_mode">Modo Oscuro</string>
+    <string name="copy_favorite_currency">Moneda favorita</string>
+    <string name="copy_select_most_used_currency">Elija la moneda que más utilice</string>
+    <string name="copy_my_account">Mi cuenta</string>
+    <string name="copy_change_my_name">Cambiar mi nombre</string>
+    <string name="copy_change_password">Cambiar contraseña</string>
+    <string name="copy_exit_my_account">Salir de mi cuenta</string>
+    <string name="copy_do_not_disturb">No molestar</string>
+    <string name="copy_interesting_news">Noticias de tu interés</string>
+
+    <string name="error_field_empty">El campo esta vació</string>
+    <string name="error_email_invalid">El correo ingresado es incorrecto</string>
+    <string name="error_password_lengh">La contraseña debe contener %d caracteres</string>
+    <string name="password_not_strong">La contraseña no es segura</string>
+    <string name="text_forgot_password">¿Olvidaste la contraseña?</string>
+    <string name="title_password_field">Contraseña</string>
+    <string name="text_button_login">Iniciar sessión</string>
+    <string name="title_email_field">Correo electronico</string>
+    <string name="content_description_image_logo">Logo de la aplicación</string>
+    <string name="welcome_app">Bienvenido</string>
+    <string name="title_dialog_confirm_email">Message de confirmación</string>
+    <string name="body_dialog_confirm_email">Confime su email en su bandeja de entrada, revise al sección de SPAM</string>
+
+    <string name="update_dialog_cancel_button">Cancelar</string>
+    <string name="update_dialog_accept_button">Confirmar</string>
 </resources>

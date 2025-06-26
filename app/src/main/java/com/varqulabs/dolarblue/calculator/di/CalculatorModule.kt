@@ -1,15 +1,15 @@
 package com.varqulabs.dolarblue.calculator.di
 
-import com.varqulabs.dolarblue.calculator.data.remote.DolarBlueService
-import com.varqulabs.dolarblue.calculator.data.repository.DolarBlueRepositoryImpl
-import com.varqulabs.dolarblue.calculator.domain.repository.DolarBlueRepository
-import com.varqulabs.dolarblue.calculator.domain.usecases.GetDolarBlueUseCase
+import com.varqulabs.dolarblue.calculator.data.remote.DollarBlueService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
@@ -18,22 +18,22 @@ object CalculatorModule {
 
     @Provides
     @Singleton
-    fun provideDolarBlueService(): DolarBlueService = Retrofit.Builder()
+    fun provideDollarBlueService(): DollarBlueService = Retrofit.Builder()
         .baseUrl("https://api.bluelytics.com.ar/")
-        .addConverterFactory(MoshiConverterFactory.create())
+        .addConverterFactory(GsonConverterFactory.create())
+        .client(getClient())
         .build()
-        .create(DolarBlueService::class.java)
+        .create(DollarBlueService::class.java)
 
-    @Provides
-    @Singleton
-    fun provideDolarBlueRepository(service: DolarBlueService): DolarBlueRepository {
-        return DolarBlueRepositoryImpl(service)
-    }
-
-    @Provides
-    @Singleton
-    fun provideGetDolarBlueUseCase(repository: DolarBlueRepository): GetDolarBlueUseCase {
-        return GetDolarBlueUseCase(repository)
-    }
-
+    private fun getClient(): OkHttpClient =
+        OkHttpClient
+            .Builder()
+            .readTimeout(60, TimeUnit.SECONDS)
+            .connectTimeout(60, TimeUnit.SECONDS)
+            .writeTimeout(60, TimeUnit.SECONDS)
+            .addInterceptor(
+                HttpLoggingInterceptor()
+                    .setLevel(HttpLoggingInterceptor.Level.BODY)
+            )
+            .build()
 }
